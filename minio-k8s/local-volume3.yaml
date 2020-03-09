@@ -19,4 +19,4 @@ spec:
         - key: kubernetes.io/hostname
           operator: In
           values:
-          - tssnode5.iswlab.local
+          - microk8s-vm

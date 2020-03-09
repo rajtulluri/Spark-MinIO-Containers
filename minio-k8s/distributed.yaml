@@ -1,11 +1,11 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   # This name uniquely identifies the StatefulSet
   name: minio
 spec:
   serviceName: minio
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: minio # has to match .spec.template.metadata.labels
@@ -25,16 +25,13 @@ spec:
         args:
         - server
         - http://minio-0.minio.default.svc.cluster.local/data
-        - http://minio-1.minio.default.svc.cluster.local/data
-        - http://minio-2.minio.default.svc.cluster.local/data
-        - http://minio-3.minio.default.svc.cluster.local/data
         ports:
         - containerPort: 9000
         # These volume mounts are persistent. Each pod in the PetSet
         # gets a volume mounted based on this field.
         volumeMounts:
         - name: data
-          mountPath: /data
+          mountPath: /data/minio/
         # Liveness probe detects situations where MinIO server instance
         # is not working properly and needs restart. Kubernetes automatically
         # restarts the pods if liveness checks fail.
